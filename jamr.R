@@ -5,7 +5,9 @@ jamr.load <- function(rootDir, verbose = TRUE) {
   if (missing(rootDir))
     rootDir <- jamr.resolveRoot()
   
-  jamr.loadDir(file.path(rootDir, "plot"),  recursive = TRUE, verbose = verbose)
+  jamr.loadDir(file.path(rootDir, "math"), recursive = TRUE, verbose = verbose)
+  jamr.loadDir(file.path(rootDir, "plot"), recursive = TRUE, verbose = verbose)
+  jamr.loadDir(file.path(rootDir, "util"), recursive = TRUE, verbose = verbose)
 
   options(stringsAsFactors = FALSE)
   options(width = 120)

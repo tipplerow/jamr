@@ -86,7 +86,9 @@ JamPlot.logY <- function(xlim, ylim, xlab, ylab, tick.power = NULL, tick.labels 
   plot(xlim, ylim, log = "y", type = "n", axes = FALSE, ylim = .jamPlot.logAxisLimit(tick.power), xlab = xlab, ylab = ylab, ...)
 
   if (x.axis)
-    axis(1)
+      axis(1)
+  else
+      axis(1, labels = FALSE)
   
   .jamPlot.logAxis(2, tick.power, tick.labels, outer)
   box()
