@@ -62,14 +62,11 @@ JamPlot.logAxis <- function(side, tick.power, tick.labels, ...) {
   .jamPlot.logAxis(side, tick.power, tick.labels, outer = FALSE, ...)
 }
 
-JamPlot.logX <- function(dframe, xkey, ykey, tick.power = NULL, tick.labels = TRUE, outer = FALSE, ...) {
-  x <- dframe[,xkey]
-  y <- dframe[,ykey]
-              
+JamPlot.logX <- function(xlim, ylim, xlab, ylab, tick.power = NULL, tick.labels = TRUE, outer = FALSE, ...) {
   if (is.null(tick.power))
     tick.power <- .jamPlot.imputeTickPowers(x)
 
-  plot(x, y, log = "x", type = "n", axes = FALSE, xlim = .jamPlot.logAxisLimit(tick.power), ...)
+  plot(xlim, ylim, xlab = xlab, ylab = ylab, log = "x", type = "n", axes = FALSE, xlim = .jamPlot.logAxisLimit(tick.power), ...)
 
   .jamPlot.logAxis(1, tick.power, tick.labels, outer, ...)
   axis(2)
@@ -91,6 +88,34 @@ JamPlot.logY <- function(xlim, ylim, xlab, ylab, tick.power = NULL, tick.labels 
       axis(1, labels = FALSE)
   
   .jamPlot.logAxis(2, tick.power, tick.labels, outer)
+  box()
+}
+
+JamPlot.logXY <- function(xlim, ylim,
+                          xlab, ylab,
+                          x.tick.power  = NULL,
+                          x.tick.labels = TRUE,
+                          y.tick.power  = NULL,
+                          y.tick.labels = TRUE,
+                          outer = FALSE, ...) {
+    if (is.null(x.tick.power))
+        x.tick.power <- .jamPlot.imputeTickPowers(xlim)
+
+    if (is.null(y.tick.power))
+        y.tick.power <- .jamPlot.imputeTickPowers(ylim)
+
+    plot(xlim, ylim,
+         log  = "xy",
+         type = "n",
+         axes = FALSE,
+         xlim = .jamPlot.logAxisLimit(x.tick.power),
+         ylim = .jamPlot.logAxisLimit(y.tick.power),
+         xlab = xlab,
+         ylab = ylab,
+         ...)
+  
+  .jamPlot.logAxis(1, x.tick.power, x.tick.labels, outer)
+  .jamPlot.logAxis(2, y.tick.power, y.tick.labels, outer)
   box()
 }
 
