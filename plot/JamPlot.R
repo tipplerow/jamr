@@ -66,7 +66,15 @@ JamPlot.logX <- function(xlim, ylim, xlab, ylab, tick.power = NULL, tick.labels 
   if (is.null(tick.power))
     tick.power <- .jamPlot.imputeTickPowers(x)
 
-  plot(xlim, ylim, xlab = xlab, ylab = ylab, log = "x", type = "n", axes = FALSE, xlim = .jamPlot.logAxisLimit(tick.power), ...)
+  plot(xlim, ylim,
+       xlab = xlab,
+       ylab = ylab,
+       log  = "x",
+       type = "n",
+       axes = FALSE,
+       xlim = .jamPlot.logAxisLimit(tick.power), 
+       ylim = ylim,
+       ...)
 
   .jamPlot.logAxis(1, tick.power, tick.labels, outer, ...)
   axis(2)
