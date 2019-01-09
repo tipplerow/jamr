@@ -7,7 +7,7 @@ JamPlot.pch <- function(x) {
   x - 1 ## Start with squares...
 }
 
-JamPlot.by <- function(dframe, xkey, ykey, bykey, byval = NULL, overlay = FALSE, type = "b",
+JamPlot.by <- function(dframe, xkey, ykey, dykey = NULL, bykey, byval = NULL, overlay = FALSE, type = "b",
                        xlab = NULL, ylab = NULL, col = NULL, pch = NULL, cex = NULL, 
                        lty = 1, lwd = 1, legend.loc = "topleft", legend.text = NULL, ...) {
   if (is.null(byval))
@@ -20,7 +20,10 @@ JamPlot.by <- function(dframe, xkey, ykey, bykey, byval = NULL, overlay = FALSE,
     ylab <- ykey
 
   if (is.null(col))
-    col <- 1:length(byval)
+      col <- 1:length(byval)
+
+  if (length(pch) == 1)
+      pch <- rep(pch, length(byval))
 
   if (is.null(pch))
     pch <- 0:(length(byval) - 1)
@@ -43,19 +46,32 @@ JamPlot.by <- function(dframe, xkey, ykey, bykey, byval = NULL, overlay = FALSE,
     x <- dframe[keep, xkey]
     y <- dframe[keep, ykey]
 
-    points(x, y, type = type, col = col[k], pch = pch[k], lty = lty, lwd = lwd, cex = cex[k])
+    if (type == "p") {
+        points(x, y, type = "p", col = col[k], pch = pch[k], cex = cex[k])
+    }
+    else if (type == "l") {
+        lines(x, y, type = "l", col = col[k], lty = lty, lwd = lwd)
+    }
+    else {
+        lines( x, y, type = "l", col = col[k], lty = lty, lwd = lwd)
+        points(x, y, type = "p", col = col[k], pch = pch[k], cex = cex[k])
+    }
+
+    if (!is.null(dykey)) {
+        dy <- dframe[keep, dykey]
+        JamPlot.err(x, y, dy, col = col[k])
+    }
   }
 
   if (!is.null(legend.loc))
     legend(legend.loc, bty = "n", legend = legend.text, col = col, pch = pch)
 }
 
-JamPlot.err <- function(x, y, dy, type = "b", pch = 1, col = 1, ...) {
+JamPlot.err <- function(x, y, dy, ...) {
   stopifnot(length(y) == length(dy))
-  points(x, y, type = type, pch = pch, col = col, ...)
 
   for (k in seq_along(y))
-    lines(c(x[k], x[k]), c(y[k] - 2.0 * dy[k], y[k] + 2.0 * dy[k]), col = col)
+    lines(c(x[k], x[k]), c(y[k] - 2.0 * dy[k], y[k] + 2.0 * dy[k]), ...)
 }
 
 JamPlot.logAxis <- function(side, tick.power, tick.labels, ...) {

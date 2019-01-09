@@ -28,6 +28,6 @@ jamr.loadFile <- function(fileName, verbose = TRUE) {
 }
 
 jamr.resolveRoot <- function() {
-  file.path(Sys.getenv("JAMR_HOME"), file.path(Sys.getenv("HOME"), "GitHub", "jamr"))
+    Sys.getenv("JAMR_HOME", unset = file.path(Sys.getenv("HOME"), "GitHub", "jamr"))
 }
 
