@@ -67,11 +67,19 @@ JamPlot.by <- function(dframe, xkey, ykey, dykey = NULL, bykey, byval = NULL, ov
     legend(legend.loc, bty = "n", legend = legend.text, col = col, pch = pch)
 }
 
-JamPlot.err <- function(x, y, dy, ...) {
-  stopifnot(length(y) == length(dy))
+JamPlot.err <- function(x, y, dx, dy, ...) {
+    stopifnot(length(y) == length(x))
+    stopifnot(length(y) == length(dy))
 
-  for (k in seq_along(y))
-    lines(c(x[k], x[k]), c(y[k] - 2.0 * dy[k], y[k] + 2.0 * dy[k]), ...)
+    if (length(dx) == 1)
+        dx <- rep(dx, length(x))
+
+    for (k in seq_along(y)) {
+        lines(c(x[k], x[k]), c(y[k] - dy[k], y[k] + dy[k]), ...)
+
+        lines(c(x[k] - dx[k], x[k] + dx[k]), c(y[k] - dy[k], y[k] - dy[k]), ...)
+        lines(c(x[k] - dx[k], x[k] + dx[k]), c(y[k] + dy[k], y[k] + dy[k]), ...)
+    }
 }
 
 JamPlot.logAxis <- function(side, tick.power, tick.labels, ...) {
@@ -226,4 +234,12 @@ JamPlot.arrows <- function(x, y, col, pch, space, length = 0.08, angle = 30) {
       arrows(x0, y0, x1, y1, length = length, angle = angle, col = col)
     }
   }
+}
+
+JamPlot.loglogline <- function(xdata, ydata, xline, engine = lm, lty = 1, col = 1, ...) {
+    lmobj <- engine(log(ydata) ~ log(xdata), ...)
+    yline <- exp(lmobj$coeff[1]) * (xline ^ lmobj$coeff[2])
+
+    lines(xline, yline, col = col, lty = lty)
+    lmobj
 }
