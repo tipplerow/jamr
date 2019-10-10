@@ -1,4 +1,8 @@
 
+Filter.demean <- function(x) {
+    x - mean(x, na.rm = TRUE)
+}
+
 Filter.isInteger <- function(x) {
     floor(x) == ceiling(x)
 }
@@ -23,4 +27,12 @@ Filter.rank <- function(x, lo = 0.0, hi = 1.0, ties.method = "average") {
 Filter.replaceNA <- function(x, default) {
     x[is.na(x)] <- default
     x
+}
+
+Filter.standardize <- function(x) {
+    x / sd(x, na.rm = TRUE)
+}
+
+Filter.zscore <- function(x) {
+    Filter.standardize(Filter.demean(x))
 }
