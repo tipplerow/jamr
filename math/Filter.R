@@ -1,4 +1,10 @@
 
+Filter.bound <- function(x, lo, hi) {
+    x <- pmax(x, lo)
+    x <- pmin(x, hi)
+    x
+}
+
 Filter.demean <- function(x) {
     x - mean(x, na.rm = TRUE)
 }
