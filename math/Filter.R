@@ -20,6 +20,10 @@ Filter.quantile <- function(x, n, ties.method = "average") {
     result
 }
 
+Filter.percentile <- function(x, ties.method = "average") {
+    Filter.rank(x, 0, 100, ties.method)
+}
+
 Filter.rank <- function(x, lo = 0.0, hi = 1.0, ties.method = "average") {
     k <- which(is.finite(x))
 
