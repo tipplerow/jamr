@@ -88,7 +88,7 @@ JamPlot.logAxis <- function(side, tick.power, tick.labels, ...) {
 
 JamPlot.logX <- function(xlim, ylim, xlab, ylab, tick.power = NULL, tick.labels = TRUE, outer = FALSE, ...) {
   if (is.null(tick.power))
-    tick.power <- .jamPlot.imputeTickPowers(x)
+    tick.power <- .jamPlot.imputeTickPowers(xlim)
 
   plot(xlim, ylim,
        xlab = xlab,
